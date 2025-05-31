@@ -2,19 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    public float moveSpeed = 5f;      // Швидкість руху
-    public float jumpForce = 10f;     // Сила стрибка
-
+    public float speed = 5f;
+    public float jumpForce = 10f;
     private Rigidbody2D rb;
-    private bool isGrounded;
-
-    // Це можна призначити через інспектор або знайти автоматично
-    public Transform groundCheck;     // Точка перевірки дотику з землею
-    public float groundCheckRadius = 0.2f;
-    public LayerMask groundLayer;     // Шар, який позначає землю
-
+    public int jumpCount = 2;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -22,27 +15,25 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Рух вліво/вправо
-        float moveInput = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+        // Ходьба
+        float move = Input.GetAxisRaw("Horizontal");
+        rb.velocity = new Vector2(move * speed, rb.velocity.y);
 
-        // Перевірка, чи гравець на землі
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        // Ground check
 
-        // Стрибок при натисканні пробілу, якщо на землі
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+
+        // Стрибок
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            jumpCount--;
         }
     }
 
-    // Для візуалізації перевірки в інспекторі
-    private void OnDrawGizmosSelected()
-    {
-        if (groundCheck != null)
+     void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("Level"))
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+            jumpCount = 2;
         }
     }
 }
