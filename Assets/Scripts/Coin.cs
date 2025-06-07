@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Coin : MonoBehaviour
@@ -8,7 +9,7 @@ public class Coin : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Монетка зібрана!");
+            GameObject.Find("CoinManager").GetComponent<CoinManager>().AddCoin();
             Destroy(gameObject);
         }
     }
