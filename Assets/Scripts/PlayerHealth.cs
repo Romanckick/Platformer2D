@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 3;
     private int currentHealth;
+    public TMP_Text livesText;
 
     void Start()
     {
@@ -24,7 +27,7 @@ public class PlayerHealth : MonoBehaviour
     void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        Debug.Log("Здоров'я: " + currentHealth);
+        livesText.text = currentHealth + " Lives";
 
         if (currentHealth <= 0)
         {
@@ -37,6 +40,6 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Гравець загинув!");
         // Тут додай логіку смерті гравця (перезапуск рівня, анімації і т.д.)
         // Наприклад:
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("Menu");
     }
 }
