@@ -9,7 +9,7 @@ public class Coin : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameObject.Find("CoinManager").GetComponent<CoinManager>().AddCoin();
+            GameObject.Find("GameManager").GetComponent<GameManager>().AddCoin();
             Destroy(gameObject);
         }
     }
